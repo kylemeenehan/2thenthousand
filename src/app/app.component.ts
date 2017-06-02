@@ -6,10 +6,42 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild('canvas') canvas;
+  @ViewChild('canvas') canvasElement;
+  canvas;
   ctx;
+  imageData;
+  numberOfPixels
+  initialNow = Date.now();
+
 
   ngAfterViewInit(){
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.canvas = this.canvasElement.nativeElement;
+    this.ctx = this.canvas.getContext('2d');
+    this.imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+    this.numberOfPixels = this.canvas.width * this.canvas.height;
+    this.paintCanvas(this.initialNow);
+  }
+
+  paintCanvas(date: number): void{
+    let binary = date.toString(2);
+    let imageData = this.ctx.getImageData(0,0,this.canvas.width, this.canvas.height);
+    let data = imageData.data;
+
+    for (let i = binary.length - 1; i>=0; i--){
+      if (binary[i] == '1'){
+        data[i] = 0;
+        data[i + 1] = 0;
+        data[i + 2] = 0;
+        data[i + 3] = 255;
+      } else {
+        data[i] = 255;
+        data[i + 1] = 255;
+        data[i + 2] = 255;
+        data[i + 3] = 255;
+      }
+    }
+
+    this.ctx.putImageData(imageData,0,0);
+
   }
 }
