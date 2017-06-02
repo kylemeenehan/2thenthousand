@@ -12,6 +12,8 @@ export class AppComponent implements AfterViewInit {
   imageData;
   numberOfPixels
   initialNow = Date.now();
+  timeValue;
+  delay = 100;
 
 
   ngAfterViewInit(){
@@ -20,6 +22,16 @@ export class AppComponent implements AfterViewInit {
     this.imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
     this.numberOfPixels = this.canvas.width * this.canvas.height;
     this.paintCanvas(this.initialNow);
+    this.timeValue = this.initialNow;
+    let timeout = setTimeout(()=>{this.animateCanvas()}, this.delay);
+    console.log(timeout);
+  }
+
+  animateCanvas(){
+    this.timeValue += this.delay;
+    this.paintCanvas(this.timeValue);
+    console.log('this:', this);
+    window.setTimeout(()=>{this.animateCanvas()},this.delay);
   }
 
   paintCanvas(date: number): void{
@@ -30,7 +42,6 @@ export class AppComponent implements AfterViewInit {
     for (let i = 0; i < binary.length; i++){
       let value = binary.charAt(binary.length - i -1);
       if (value == '1'){
-        console.log('true')
         data[i * 4] = 0;
         data[i * 4 + 1] = 0;
         data[i * 4 + 2] = 0;
