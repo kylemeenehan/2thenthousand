@@ -27,17 +27,19 @@ export class AppComponent implements AfterViewInit {
     let imageData = this.ctx.getImageData(0,0,this.canvas.width, this.canvas.height);
     let data = imageData.data;
 
-    for (let i = binary.length - 1; i>=0; i--){
-      if (binary[i] == '1'){
-        data[i] = 0;
-        data[i + 1] = 0;
-        data[i + 2] = 0;
-        data[i + 3] = 255;
+    for (let i = 0; i < binary.length; i++){
+      let value = binary.charAt(binary.length - i -1);
+      if (value == '1'){
+        console.log('true')
+        data[i * 4] = 0;
+        data[i * 4 + 1] = 0;
+        data[i * 4 + 2] = 0;
+        data[i * 4 + 3] = 255;
       } else {
-        data[i] = 255;
-        data[i + 1] = 255;
-        data[i + 2] = 255;
-        data[i + 3] = 255;
+        data[i * 4] = 255;
+        data[i * 4 + 1] = 255;
+        data[i * 4 + 2] = 255;
+        data[i * 4 + 3] = 255;
       }
     }
 
